@@ -14,6 +14,11 @@ namespace ClientApp
 {
     public partial class Form1 : Form
     {
+        IPHostEntry host;
+        IPAddress ip;
+        IPEndPoint endPoint;
+        Socket socket;
+
         public Form1()
         {
             InitializeComponent();
@@ -21,11 +26,22 @@ namespace ClientApp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            IPHostEntry host = Dns.GetHostEntry("localhost");
-            IPAddress ip = host.AddressList[0];
-            IPEndPoint endPoint = new IPEndPoint(ip, 18000);
-            Socket socket = new Socket(ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            ConsoleBox.Text += "Подключение..." + '\n';
+            host = Dns.GetHostEntry("127.0.0.1");
+            ip = host.AddressList[0];
+            endPoint = new IPEndPoint(ip, 18000);
+            socket = new Socket(ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             socket.Connect(endPoint);
+            if (socket.Connected)
+            {
+                ConsoleBox.Text = "Подключился" + '\n';
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {  
+            socket.Send(BitConverter.GetBytes(1));
+                      
         }
     }
 }
