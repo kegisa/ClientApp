@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,6 +20,8 @@ namespace ClientApp
         IPAddress ip;
         IPEndPoint endPoint;
         Socket socket;
+        byte[] buf = new byte[1000000];
+        BigInteger rsaKey;
 
         public Form1()
         {
@@ -26,8 +30,8 @@ namespace ClientApp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ConsoleBox.Text += "Подключение..." + '\n';
-            host = Dns.GetHostEntry("127.0.0.1");
+            
+            host = Dns.GetHostEntry("localhost");
             ip = host.AddressList[0];
             endPoint = new IPEndPoint(ip, 18000);
             socket = new Socket(ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -40,8 +44,15 @@ namespace ClientApp
 
         private void button2_Click(object sender, EventArgs e)
         {  
-            socket.Send(BitConverter.GetBytes(1));
-                      
+            socket.Send(Encoding.Default.GetBytes("Запрос RSA"));
+
+
+            int received = socket.Receive(buf);
+            MemoryStream s = new MemoryStream();
+            s.Write(buf, 0, received);
+            rsaKey = BigInteger.Parse(Encoding.Default.GetString(s.ToArray()));
+            ConsoleBox.Text += "Ключ получен";
+            MessageBox.Show("RSA ключ получен");
         }
     }
 }
