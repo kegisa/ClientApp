@@ -61,7 +61,7 @@ namespace ClientApp
         {
             if (rsaKey != 0 && d.decodeKey!=null)
             {
-                var CipherKey = RSA.encryption(Encoding.Default.GetBytes(d.decodeKey), rsaKey);
+                var CipherKey = RSA.encryption(Encoding.UTF32.GetBytes(d.decodeKey), rsaKey);
                 MemoryStream s = new MemoryStream();
                 BinaryFormatter bf = new BinaryFormatter();
                 bf.Serialize(s, CipherKey);
@@ -98,6 +98,11 @@ namespace ClientApp
             {
                 MessageBox.Show("Добавьте файл и введите ключевое слово");
             }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            socket.Send(File.ReadAllBytes("C:\\Users\\user\\Documents\\out1.txt"));
         }
     }
 }
