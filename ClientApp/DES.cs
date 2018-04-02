@@ -63,56 +63,14 @@ namespace ClientApp
             for (int i = 0; i < Blocks.Length; i++)
                 result += Blocks[i];
 
-            StreamWriter sw = new StreamWriter("C:\\Users\\user\\Documents\\out1.txt");
+            StreamWriter sw = new StreamWriter("C:\\Users\\Victor\\Documents\\out1.txt");
             sw.WriteLine(StringFromBinaryToNormalFormat(result));
             sw.Close();
 
-            Process.Start("C:\\Users\\user\\Documents\\out1.txt");
+            Process.Start("C:\\Users\\Victor\\Documents\\out1.txt");
         }
 
-        public void decrypt(String keyText)
-        {
-            string s = "";
-
-            key = StringToBinaryFormat(keyText);
-
-            StreamReader sr = new StreamReader("C:\\Users\\Victor\\Documents\\out1.txt");
-
-            while (!sr.EndOfStream)
-            {
-                s += sr.ReadLine();
-            }
-
-            sr.Close();
-
-            s = StringToBinaryFormat(s);
-
-            CutBinaryStringIntoBlocks(s);
-
-            for (int j = 0; j < quantityOfRounds; j++)
-            {
-                for (int i = 0; i < Blocks.Length; i++)
-                    Blocks[i] = DecodeDES_One_Round(Blocks[i], key);
-
-                key = KeyToPrevRound(key);
-            }
-
-            key = KeyToNextRound(key);
-
-            encodeKey = StringFromBinaryToNormalFormat(key);
-
-            string result = "";
-
-            for (int i = 0; i < Blocks.Length; i++)
-                result += Blocks[i];
-
-
-            StreamWriter sw = new StreamWriter("C:\\Users\\Victor\\Documents\\out2.txt");
-            sw.WriteLine(StringFromBinaryToNormalFormat(result));
-            sw.Close();
-
-            Process.Start("C:\\Users\\Victor\\Documents\\out2.txt");
-        }
+        
         //доводим строку до размера, чтобы делилась на sizeOfBlock
         private string StringToRightLength(string input)
         {

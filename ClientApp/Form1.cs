@@ -16,15 +16,9 @@ using System.Windows.Forms;
 namespace ClientApp
 {
     public partial class Form1 : Form
-    {
-        IPHostEntry host;
-        IPAddress ip;
-        IPEndPoint endPoint;
-        Socket socket;
-        byte[] buf = new byte[1000000];
-        BigInteger rsaKey = 0;
-        string pathFile = null;
+    { 
         DES d = new DES();
+        bool f = false;
         public Form1()
         {
             InitializeComponent();
@@ -32,40 +26,45 @@ namespace ClientApp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
-            host = Dns.GetHostEntry("localhost");
-            ip = host.AddressList[0];
-            endPoint = new IPEndPoint(ip, 18000);
-            socket = new Socket(ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            socket.Connect(endPoint);
-            if (socket.Connected)
+            try
             {
-                ConsoleBox.Text = "Подключился" + '\n';
+                Connect.connect();
+                ConsoleBox.Text += "Подключено" + '\n';
             }
+            catch(System.Net.Sockets.SocketException ex)
+            {
+                ConsoleBox.Text += "Соединение не установлено , повторите попытку позже." + '\n';
+            }   
         }
 
         private void button2_Click(object sender, EventArgs e)
-        {  
-            socket.Send(Encoding.Default.GetBytes("Запрос RSA"));
-
-
-            int received = socket.Receive(buf);
-            MemoryStream s = new MemoryStream();
-            s.Write(buf, 0, received);
-            rsaKey = BigInteger.Parse(Encoding.Default.GetString(s.ToArray()));
-            ConsoleBox.Text += "Ключ получен";
-            MessageBox.Show("RSA ключ получен");
+        {
+            try
+            {
+                Connect.getRSA();
+                ConsoleBox.Text += "Ключ RSA получен" + '\n';
+            }
+            catch(System.Net.Sockets.SocketException ex)
+            {
+                ConsoleBox.Text += "Соединение не установлено, нажмите ПОДКЛЮЧИТЬСЯ" + '\n';
+            }
+            catch(System.NullReferenceException ex)
+            {
+                ConsoleBox.Text += "Соединение не установлено, нажмите ПОДКЛЮЧИТЬСЯ" + '\n';
+            }
+           
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (rsaKey != 0 && d.decodeKey!=null)
+            if (Connect.RsaKey != 0 && d.decodeKey!=null)
             {
-                var CipherKey = RSA.encryption(Encoding.UTF32.GetBytes(d.decodeKey), rsaKey);
-                MemoryStream s = new MemoryStream();
-                BinaryFormatter bf = new BinaryFormatter();
-                bf.Serialize(s, CipherKey);
-                socket.Send(s.ToArray());
+                Connect.sendDES(d);
+                ConsoleBox.Text += "Ключ DES отправлен" + '\n';
+            }
+            else
+            {
+                ConsoleBox.Text += "Для отправки ключа DES вы должны получить RSA ключ и ввести пароль для DES" + '\n';
             }
         }
 
@@ -76,9 +75,10 @@ namespace ClientApp
             {
                 if (op.ShowDialog() == DialogResult.OK)
                 {
-                    pathFile = op.FileName;
+                    Connect.PathFile = op.FileName;
                 }
             }
+            ConsoleBox.Text += "Открыт файл " + Connect.PathFile + '\n';
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -88,21 +88,30 @@ namespace ClientApp
 
         private void button5_Click(object sender, EventArgs e)
         {
-            if (encodeKeyTextBox.Text.Length > 0 && pathFile != null)
+            if (encodeKeyTextBox.Text.Length > 0 && Connect.PathFile != null)
             {
-                d.encrypt(encodeKeyTextBox.Text, pathFile);
-               // decodeKeyTextBox.Text = d.decodeKey;
-
+                d.encrypt(encodeKeyTextBox.Text, Connect.PathFile);
+                ConsoleBox.Text += "Ключевое слово и файл зашифрованы DES" + '\n';
+                f = true;
             }
             else
             {
-                MessageBox.Show("Добавьте файл и введите ключевое слово");
+                ConsoleBox.Text += "Добавьте файл и ключевое слово" + '\n';
             }
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            socket.Send(File.ReadAllBytes("C:\\Users\\user\\Documents\\out1.txt"));
+            if (f)
+            {
+                Connect.sendFile();
+                ConsoleBox.Text += "Файл отпрвален" + '\n';
+            }
+            else
+            {
+                ConsoleBox.Text += "Сначала добавьте файл и зашифруйте его DES" + '\n';
+            }
+           
         }
     }
 }
