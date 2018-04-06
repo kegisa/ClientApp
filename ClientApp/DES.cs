@@ -63,15 +63,15 @@ namespace ClientApp
             for (int i = 0; i < Blocks.Length; i++)
                 result += Blocks[i];
 
-            StreamWriter sw = new StreamWriter("C:\\Users\\Victor\\Documents\\out1.txt");
+            StreamWriter sw = new StreamWriter("C:\\Users\\user\\Documents\\out1.txt");
             sw.WriteLine(StringFromBinaryToNormalFormat(result));
             sw.Close();
 
-            Process.Start("C:\\Users\\Victor\\Documents\\out1.txt");
+            Process.Start("C:\\Users\\user\\Documents\\out1.txt");
         }
 
         
-        //доводим строку до размера, чтобы делилась на sizeOfBlock
+
         private string StringToRightLength(string input)
         {
             while (((input.Length * sizeOfChar) % sizeOfBlock) != 0)
@@ -80,7 +80,7 @@ namespace ClientApp
             return input;
         }
 
-        //разбиение обычной строки на блоки
+
         private void CutStringIntoBlocks(string input)
         {
             Blocks = new string[(input.Length * sizeOfChar) / sizeOfBlock];
@@ -94,7 +94,7 @@ namespace ClientApp
             }
         }
 
-        //разбиение двоичной строки на блоки
+
         private void CutBinaryStringIntoBlocks(string input)
         {
             Blocks = new string[input.Length / sizeOfBlock];
@@ -105,7 +105,7 @@ namespace ClientApp
                 Blocks[i] = input.Substring(i * lengthOfBlock, lengthOfBlock);
         }
 
-        //перевод строки в двоичный формат
+
         private string StringToBinaryFormat(string input)
         {
             string output = "";
@@ -123,7 +123,7 @@ namespace ClientApp
             return output;
         }
 
-        //доводим длину ключа до нужной
+
         private string CorrectKeyWord(string input, int lengthKey)
         {
             if (input.Length > lengthKey)
@@ -135,7 +135,7 @@ namespace ClientApp
             return input;
         }
 
-        //шифрование DES один раунд
+
         private string EncodeDES_One_Round(string input, string key)
         {
             string L = input.Substring(0, input.Length / 2);
@@ -144,7 +144,7 @@ namespace ClientApp
             return (R + XOR(L, f(R, key)));
         }
 
-        //расшифровка DES один раунд
+
         private string DecodeDES_One_Round(string input, string key)
         {
             string L = input.Substring(0, input.Length / 2);
@@ -153,7 +153,7 @@ namespace ClientApp
             return (XOR(f(L, key), R) + L);
         }
 
-        //XOR двух строк с двоичными данными
+
         private string XOR(string s1, string s2)
         {
             string result = "";
@@ -171,13 +171,12 @@ namespace ClientApp
             return result;
         }
 
-        //шифрующая функция f. в данном случае это XOR
         private string f(string s1, string s2)
         {
             return XOR(s1, s2);
         }
 
-        //вычисление ключа для следующего раунда шифрования. циклический сдвиг >> 2
+
         private string KeyToNextRound(string key)
         {
             for (int i = 0; i < shiftKey; i++)
@@ -189,7 +188,7 @@ namespace ClientApp
             return key;
         }
 
-        //вычисление ключа для следующего раунда расшифровки. циклический сдвиг << 2
+
         private string KeyToPrevRound(string key)
         {
             for (int i = 0; i < shiftKey; i++)
@@ -201,7 +200,6 @@ namespace ClientApp
             return key;
         }
 
-        //переводим строку с двоичными данными в символьный формат
         private string StringFromBinaryToNormalFormat(string input)
         {
             string output = "";

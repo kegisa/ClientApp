@@ -8,6 +8,7 @@ using System.Numerics;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ClientApp
 {
@@ -70,9 +71,49 @@ namespace ClientApp
             socket.Send(s.ToArray());
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public static void sendFile()
         {
-            socket.Send(File.ReadAllBytes("C:\\Users\\Victor\\Documents\\out1.txt")); 
+            socket.Send(File.ReadAllBytes("C:\\Users\\user\\Documents\\out1.txt")); 
+            //socket.Send(File.ReadAllBytes("C:\\Users\\user\\Documents\\out1.txt")); 
+            /*  FileStream file1 = new FileStream("C:\\Users\\user\\Documents\\out1.txt", FileMode.Open);
+              StreamReader reader = new StreamReader(file1);
+             using (reader)
+              {
+                  char[] c = null;
+                  while (reader.Peek() >= 0)
+                  {
+                      c = new char[10];
+                      reader.ReadBlock(c, 0, c.Length);
+                      byte[] mass = Encoding.UTF32.GetBytes(c);
+                      socket.Send(mass);
+                  }
+              }*/
+            /* byte[] bytes = new byte[55];
+             var stream = File.OpenRead("C:\\Users\\user\\Documents\\out1.txt");
+             while (stream.CanSeek)
+             {
+                 int count = stream.Read(bytes, 0, 55);
+                 socket.Send(bytes);
+                 stream.Seek(55, SeekOrigin.Begin);
+             }*/
+            /* byte[] bytes = new byte[100];
+             using (var stream = File.OpenRead("C:\\Users\\user\\Documents\\out1.txt"))
+             {
+                 int length = (int)stream.Length;
+                 for (int i = 0; i * 100 <= length;i++)
+                 {
+
+                         int count = stream.Read(bytes, i * 100, 100);
+                         socket.Send(bytes);
+
+                 }
+
+             }*/
+
+
         }
 
     }

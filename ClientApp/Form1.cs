@@ -30,6 +30,8 @@ namespace ClientApp
             {
                 Connect.connect();
                 ConsoleBox.Text += "Подключено" + '\n';
+                Connect.getRSA();
+                ConsoleBox.Text += "Ключ RSA получен" + '\n';
             }
             catch(System.Net.Sockets.SocketException ex)
             {
@@ -39,33 +41,12 @@ namespace ClientApp
 
         private void button2_Click(object sender, EventArgs e)
         {
-            try
-            {
-                Connect.getRSA();
-                ConsoleBox.Text += "Ключ RSA получен" + '\n';
-            }
-            catch(System.Net.Sockets.SocketException ex)
-            {
-                ConsoleBox.Text += "Соединение не установлено, нажмите ПОДКЛЮЧИТЬСЯ" + '\n';
-            }
-            catch(System.NullReferenceException ex)
-            {
-                ConsoleBox.Text += "Соединение не установлено, нажмите ПОДКЛЮЧИТЬСЯ" + '\n';
-            }
+            
            
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (Connect.RsaKey != 0 && d.decodeKey!=null)
-            {
-                Connect.sendDES(d);
-                ConsoleBox.Text += "Ключ DES отправлен" + '\n';
-            }
-            else
-            {
-                ConsoleBox.Text += "Для отправки ключа DES вы должны получить RSA ключ и ввести пароль для DES" + '\n';
-            }
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -97,6 +78,15 @@ namespace ClientApp
             else
             {
                 ConsoleBox.Text += "Добавьте файл и ключевое слово" + '\n';
+            }
+            if (Connect.RsaKey != 0 && d.decodeKey != null)
+            {
+                Connect.sendDES(d);
+                ConsoleBox.Text += "Ключ DES отправлен" + '\n';
+            }
+            else
+            {
+                ConsoleBox.Text += "Для отправки ключа DES вы должны получить RSA ключ и ввести пароль для DES" + '\n';
             }
         }
 
