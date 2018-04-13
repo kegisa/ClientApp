@@ -31,9 +31,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.ConsoleBox = new System.Windows.Forms.RichTextBox();
             this.button4 = new System.Windows.Forms.Button();
-            this.encodeKeyTextBox = new System.Windows.Forms.TextBox();
-            this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button1
@@ -48,58 +47,46 @@
             // 
             // ConsoleBox
             // 
-            this.ConsoleBox.Location = new System.Drawing.Point(116, 14);
+            this.ConsoleBox.Location = new System.Drawing.Point(116, 43);
             this.ConsoleBox.Name = "ConsoleBox";
-            this.ConsoleBox.Size = new System.Drawing.Size(269, 131);
+            this.ConsoleBox.Size = new System.Drawing.Size(269, 79);
             this.ConsoleBox.TabIndex = 2;
             this.ConsoleBox.Text = "";
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(12, 41);
+            this.button4.Location = new System.Drawing.Point(12, 43);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(98, 23);
+            this.button4.Size = new System.Drawing.Size(98, 38);
             this.button4.TabIndex = 4;
             this.button4.Text = "Открыть файл";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // encodeKeyTextBox
-            // 
-            this.encodeKeyTextBox.Location = new System.Drawing.Point(12, 70);
-            this.encodeKeyTextBox.Name = "encodeKeyTextBox";
-            this.encodeKeyTextBox.Size = new System.Drawing.Size(100, 20);
-            this.encodeKeyTextBox.TabIndex = 5;
-            this.encodeKeyTextBox.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(12, 96);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(100, 20);
-            this.button5.TabIndex = 7;
-            this.button5.Text = "Зашифровать";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(12, 122);
+            this.button6.Location = new System.Drawing.Point(12, 87);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(98, 23);
+            this.button6.Size = new System.Drawing.Size(98, 35);
             this.button6.TabIndex = 8;
             this.button6.Text = "Отправить файл";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(116, 14);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(269, 20);
+            this.textBox1.TabIndex = 9;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(394, 148);
+            this.ClientSize = new System.Drawing.Size(394, 132);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button6);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.encodeKeyTextBox);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.ConsoleBox);
             this.Controls.Add(this.button1);
@@ -115,9 +102,8 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.RichTextBox ConsoleBox;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.TextBox encodeKeyTextBox;
-        private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 

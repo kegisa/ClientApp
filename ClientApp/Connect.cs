@@ -44,9 +44,9 @@ namespace ClientApp
         }
         static byte[] buf = new byte[1000000];
 
-        public static void connect()
+        public static void connect(String ipText)
         {
-            IPHostEntry host = Dns.GetHostEntry("localhost");
+            IPHostEntry host = Dns.GetHostEntry(ipText);
             IPAddress ip = host.AddressList[0];
             IPEndPoint endPoint = new IPEndPoint(ip, 18000);
             socket = new Socket(ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -114,6 +114,10 @@ namespace ClientApp
              }*/
 
 
+        }
+        public static void openDecrypt()
+        {
+            socket.Send(Encoding.Default.GetBytes("Откыть файл"));
         }
 
     }

@@ -26,17 +26,25 @@ namespace ClientApp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            try
+            if (textBox1.Text.Length > 0)
             {
-                Connect.connect();
-                ConsoleBox.Text += "Подключено" + '\n';
-                Connect.getRSA();
-                ConsoleBox.Text += "Ключ RSA получен" + '\n';
+                try
+                {
+                    Connect.connect(textBox1.Text);
+                    ConsoleBox.Text += "Подключено" + '\n';
+                    Connect.getRSA();
+                    ConsoleBox.Text += "Ключ RSA получен" + '\n';
+                }
+                catch (System.Net.Sockets.SocketException ex)
+                {
+                    ConsoleBox.Text += "Соединение не установлено , повторите попытку позже." + '\n';
+                }
             }
-            catch(System.Net.Sockets.SocketException ex)
+            else
             {
-                ConsoleBox.Text += "Соединение не установлено , повторите попытку позже." + '\n';
-            }   
+                ConsoleBox.Text += "Введите IP Сервера";
+            }
+            
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -60,6 +68,26 @@ namespace ClientApp
                 }
             }
             ConsoleBox.Text += "Открыт файл " + Connect.PathFile + '\n';
+
+            if (Connect.PathFile != null)
+            {
+                d.encrypt("2345", Connect.PathFile);
+                ConsoleBox.Text += "Ключевое слово и файл зашифрованы DES" + '\n';
+                f = true;
+            }
+            else
+            {
+                ConsoleBox.Text += "Добавьте файл" + '\n';
+            }
+            if (Connect.RsaKey != 0 && d.decodeKey != null)
+            {
+                Connect.sendDES(d);
+                ConsoleBox.Text += "Ключ DES отправлен" + '\n';
+            }
+            else
+            {
+                ConsoleBox.Text += "Для отправки ключа DES вы должны получить RSA ключ" + '\n';
+            }
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -69,15 +97,15 @@ namespace ClientApp
 
         private void button5_Click(object sender, EventArgs e)
         {
-            if (encodeKeyTextBox.Text.Length > 0 && Connect.PathFile != null)
+            if (Connect.PathFile != null)
             {
-                d.encrypt(encodeKeyTextBox.Text, Connect.PathFile);
+                d.encrypt("2345", Connect.PathFile);
                 ConsoleBox.Text += "Ключевое слово и файл зашифрованы DES" + '\n';
                 f = true;
             }
             else
             {
-                ConsoleBox.Text += "Добавьте файл и ключевое слово" + '\n';
+                ConsoleBox.Text += "Добавьте файл" + '\n';
             }
             if (Connect.RsaKey != 0 && d.decodeKey != null)
             {
@@ -86,7 +114,7 @@ namespace ClientApp
             }
             else
             {
-                ConsoleBox.Text += "Для отправки ключа DES вы должны получить RSA ключ и ввести пароль для DES" + '\n';
+                ConsoleBox.Text += "Для отправки ключа DES вы должны получить RSA ключ" + '\n';
             }
         }
 
@@ -102,6 +130,11 @@ namespace ClientApp
                 ConsoleBox.Text += "Сначала добавьте файл и зашифруйте его DES" + '\n';
             }
            
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            Connect.openDecrypt();
         }
     }
 }
