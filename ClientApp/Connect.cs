@@ -23,6 +23,7 @@ namespace ClientApp
             }
         }
         static string pathFile;
+        public static byte[] readFile;
         public static string PathFile
         {
             get
@@ -35,11 +36,14 @@ namespace ClientApp
             }
         }
         static BigInteger rsaKey = 0;
-        public static BigInteger RsaKey
+        static BigInteger n;
+        static BigInteger d;
+        static BigInteger E;
+        public static BigInteger D
         {
             get
             {
-                return rsaKey;
+                return d;
             }
         }
         static byte[] buf = new byte[1000000];
@@ -59,12 +63,27 @@ namespace ClientApp
             int received = socket.Receive(buf);
             MemoryStream s = new MemoryStream();
             s.Write(buf, 0, received);
-            rsaKey = BigInteger.Parse(Encoding.Default.GetString(s.ToArray()));
+            E = BigInteger.Parse(Encoding.Default.GetString(s.ToArray()));
+            s.Close();
+
+            received = socket.Receive(buf);
+            MemoryStream s1 = new MemoryStream();
+            s1.Write(buf, 0, received);
+            d = BigInteger.Parse(Encoding.Default.GetString(s1.ToArray()));
+            s.Close();
+
+            received = socket.Receive(buf);
+            MemoryStream s2 = new MemoryStream();
+            s2.Write(buf, 0, received);
+            n = BigInteger.Parse(Encoding.Default.GetString(s2.ToArray()));
+
+
+
         }
 
         public static void sendDES(DES d)
         {
-            var CipherKey = RSA.encryption(Encoding.UTF32.GetBytes(d.decodeKey), rsaKey);
+            var CipherKey = RSA.Encryption(Encoding.UTF32.GetBytes(d.decodeKey),E,n);
             MemoryStream s = new MemoryStream();
             BinaryFormatter bf = new BinaryFormatter();
             bf.Serialize(s, CipherKey);
@@ -76,44 +95,15 @@ namespace ClientApp
         /// </summary>
         public static void sendFile()
         {
-            socket.Send(File.ReadAllBytes("C:\\Users\\user\\Documents\\out1.txt")); 
-            //socket.Send(File.ReadAllBytes("C:\\Users\\user\\Documents\\out1.txt")); 
-            /*  FileStream file1 = new FileStream("C:\\Users\\user\\Documents\\out1.txt", FileMode.Open);
-              StreamReader reader = new StreamReader(file1);
-             using (reader)
-              {
-                  char[] c = null;
-                  while (reader.Peek() >= 0)
-                  {
-                      c = new char[10];
-                      reader.ReadBlock(c, 0, c.Length);
-                      byte[] mass = Encoding.UTF32.GetBytes(c);
-                      socket.Send(mass);
-                  }
-              }*/
-            /* byte[] bytes = new byte[55];
-             var stream = File.OpenRead("C:\\Users\\user\\Documents\\out1.txt");
-             while (stream.CanSeek)
-             {
-                 int count = stream.Read(bytes, 0, 55);
-                 socket.Send(bytes);
-                 stream.Seek(55, SeekOrigin.Begin);
-             }*/
-            /* byte[] bytes = new byte[100];
-             using (var stream = File.OpenRead("C:\\Users\\user\\Documents\\out1.txt"))
-             {
-                 int length = (int)stream.Length;
-                 for (int i = 0; i * 100 <= length;i++)
-                 {
+            readFile = File.ReadAllBytes("C:\\Users\\Victor\\Documents\\out1.txt");
+            var Signature = RSA.EncryptSignature(DigitalSignatur.GetHash(), d, n);
+            MemoryStream s = new MemoryStream();
+            BinaryFormatter bf = new BinaryFormatter();
+            bf.Serialize(s, Signature);
+            socket.Send(s.ToArray());
 
-                         int count = stream.Read(bytes, i * 100, 100);
-                         socket.Send(bytes);
-
-                 }
-
-             }*/
-
-
+            socket.Send(readFile); 
+            
         }
         public static void openDecrypt()
         {

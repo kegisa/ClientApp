@@ -79,7 +79,7 @@ namespace ClientApp
             {
                 ConsoleBox.Text += "Добавьте файл" + '\n';
             }
-            if (Connect.RsaKey != 0 && d.decodeKey != null)
+            if (Connect.D != 0 && d.decodeKey != null)
             {
                 Connect.sendDES(d);
                 ConsoleBox.Text += "Ключ DES отправлен" + '\n';
@@ -107,7 +107,7 @@ namespace ClientApp
             {
                 ConsoleBox.Text += "Добавьте файл" + '\n';
             }
-            if (Connect.RsaKey != 0 && d.decodeKey != null)
+            if (Connect.D != 0 && d.decodeKey != null)
             {
                 Connect.sendDES(d);
                 ConsoleBox.Text += "Ключ DES отправлен" + '\n';

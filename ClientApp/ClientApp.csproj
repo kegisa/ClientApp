@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Connect.cs" />
     <Compile Include="DES.cs" />
+    <Compile Include="DigitalSignatur.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
