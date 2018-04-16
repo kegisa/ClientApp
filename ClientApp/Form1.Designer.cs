@@ -79,6 +79,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(269, 20);
             this.textBox1.TabIndex = 9;
+            this.textBox1.Text = "localhost";
             // 
             // Form1
             // 

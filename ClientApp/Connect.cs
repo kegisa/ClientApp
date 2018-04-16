@@ -100,7 +100,7 @@ namespace ClientApp
             MemoryStream s = new MemoryStream();
             BinaryFormatter bf = new BinaryFormatter();
             bf.Serialize(s, Signature);
-            socket.Send(s.ToArray());
+           // socket.Send(s.ToArray());
 
             socket.Send(readFile); 
             
