@@ -1,16 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Numerics;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ClientApp
@@ -79,7 +67,7 @@ namespace ClientApp
             {
                 ConsoleBox.Text += "Добавьте файл" + '\n';
             }
-            if (Connect.D != 0 && d.decodeKey != null)
+            if (Connect.N != 0 && d.decodeKey != null)
             {
                 Connect.sendDES(d);
                 ConsoleBox.Text += "Ключ DES отправлен" + '\n';
@@ -107,7 +95,7 @@ namespace ClientApp
             {
                 ConsoleBox.Text += "Добавьте файл" + '\n';
             }
-            if (Connect.D != 0 && d.decodeKey != null)
+            if (Connect.N != 0 && d.decodeKey != null)
             {
                 Connect.sendDES(d);
                 ConsoleBox.Text += "Ключ DES отправлен" + '\n';

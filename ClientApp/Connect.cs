@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Numerics;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Threading;
+
 
 namespace ClientApp
 {
@@ -39,14 +37,14 @@ namespace ClientApp
         static BigInteger n;
         static BigInteger d;
         static BigInteger E;
-        public static BigInteger D
+        public static BigInteger N
         {
             get
             {
-                return d;
+                return n;
             }
         }
-        static byte[] buf = new byte[1000000];
+        static byte[] buf = new byte[100000000];
 
         public static void connect(String ipText)
         {
@@ -66,11 +64,11 @@ namespace ClientApp
             E = BigInteger.Parse(Encoding.Default.GetString(s.ToArray()));
             s.Close();
 
-            received = socket.Receive(buf);
+           /* received = socket.Receive(buf);
             MemoryStream s1 = new MemoryStream();
             s1.Write(buf, 0, received);
             d = BigInteger.Parse(Encoding.Default.GetString(s1.ToArray()));
-            s.Close();
+            s.Close();*/
 
             received = socket.Receive(buf);
             MemoryStream s2 = new MemoryStream();
@@ -90,17 +88,27 @@ namespace ClientApp
             socket.Send(s.ToArray());
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+
         public static void sendFile()
         {
-            readFile = File.ReadAllBytes("C:\\Users\\Victor\\Documents\\out1.txt");
-            var Signature = RSA.EncryptSignature(DigitalSignatur.GetHash(), d, n);
+            RSA.Generate_keys();
+            String OpenKeyE = RSA.GetOpenKey()[0].ToString();
+            socket.Send(Encoding.UTF32.GetBytes(OpenKeyE));
+            Thread.Sleep(10);
+
+            String OpenKeyN = RSA.GetOpenKey()[1].ToString();
+            socket.Send(Encoding.UTF32.GetBytes(OpenKeyN));
+            Thread.Sleep(10);
+
+            readFile = File.ReadAllBytes("C:\\Users\\user\\Documents\\out1.txt");
+            var Signature = RSA.EncryptSignature(DigitalSignatur.GetHash());
+
             MemoryStream s = new MemoryStream();
             BinaryFormatter bf = new BinaryFormatter();
             bf.Serialize(s, Signature);
-           // socket.Send(s.ToArray());
+            socket.Send(s.ToArray());
+            Thread.Sleep(10);
+
 
             socket.Send(readFile); 
             
