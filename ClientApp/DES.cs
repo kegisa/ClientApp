@@ -61,11 +61,11 @@ namespace ClientApp
             for (int i = 0; i < Blocks.Length; i++)
                 result += Blocks[i];
 
-            StreamWriter sw = new StreamWriter("C:\\Users\\user\\Documents\\out1.txt");
+            StreamWriter sw = new StreamWriter("C:\\Users\\Victor\\Documents\\out1.txt");
             sw.WriteLine(StringFromBinaryToNormalFormat(result));
             sw.Close();
 
-            Process.Start("C:\\Users\\user\\Documents\\out1.txt");
+            Process.Start("C:\\Users\\Victor\\Documents\\out1.txt");
         }
 
         

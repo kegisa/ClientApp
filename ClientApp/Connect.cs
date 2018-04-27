@@ -100,8 +100,10 @@ namespace ClientApp
             socket.Send(Encoding.UTF32.GetBytes(OpenKeyN));
             Thread.Sleep(10);
 
-            readFile = File.ReadAllBytes("C:\\Users\\user\\Documents\\out1.txt");
-            var Signature = RSA.EncryptSignature(DigitalSignatur.GetHash());
+            readFile = File.ReadAllBytes("C:\\Users\\Victor\\Documents\\out1.txt");
+            //var Signature = RSA.EncryptSignature(DigitalSignatur.GetHash());
+            DigitalSignatur digitalSignature = new DigitalSignatur();
+            var Signature = RSA.EncryptSignature(digitalSignature.computeHash(readFile));
 
             MemoryStream s = new MemoryStream();
             BinaryFormatter bf = new BinaryFormatter();
